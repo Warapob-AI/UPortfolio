@@ -135,11 +135,14 @@ const EXPERIENCE = {
       period: "มิ.ย. 2569 – ธ.ค. 2569",
       company: "G-Able Public Company Limited",
       role: "Full Stack Developer (Outsource)",
-      tech: "React · Java · MSSQL",
+      tech: "React · Java Spring Boot · Oracle Database",
       color: "#22d3ee",
       points: [
-        "ทำการ Revamp ระบบดั้งเดิมที่มีอายุกว่า 30 ปี โดยเปลี่ยนผ่านจาก Tech Stack เก่ามาเป็น React และ Java ที่ทันสมัยมากกว่าเดิม",
-        "ทำโดยพึ่งพาการใช้ AI ช่วยแปลงโค้ด และทำการตรวจสอบรีวิวโค้ดอย่างละเอียดเนื่องจาก AI ยังมีข้อบกพร่องในตอนที่ทำการผันเปลี่ยนโค้ด",
+        "ทำการ Revamp ระบบดั้งเดิมที่มีอายุกว่า 30 ปี โดยเปลี่ยนผ่านจาก Apache Struts (Legacy Stack) มาเป็น React, Java Spring Boot และ Oracle Database",
+        "มีประสบการณ์การใช้ Claude Max Plan ในการประยุกต์ใช้ AI เพื่อประสิทธิภาพในการ Migrate ที่สูงที่สุด โดยสร้างเอกสาร Skill.md พร้อมเสนอวิธีและแนวทางประหยัด Token ให้กับคนในทีม",
+        "มีประสบการณ์ออกแบบและพัฒนา Reusable UI Components เพื่อให้ทีมสามารถเรียนรู้และปฏิบัติงานต่อได้ง่าย",
+        "มีประสบการณ์ดูแลน้องฝึกงาน ตั้งแต่ขั้นตอน Setup โปรแกรมเริ่มต้น รวมถึง การสอนงานและรีวิวโค้ด",
+        "ทำการตรวจสอบรีวิวโค้ดและทดสอบระบบอย่างละเอียด เพื่อตรวจหาและแก้ไขข้อบกพร่องและตรรกะที่เกิดจากการแปลงโค้ดด้วย AI",
       ],
     },
     {
@@ -174,7 +177,7 @@ const EXPERIENCE = {
         "นำเสนอผลลัพธ์โดยตรงต่อ CTO ของ Villa Market ซึ่งให้ feedback ว่า solution ตอบโจทย์และมีประสิทธิภาพสูง",
       ],
       imgs: [
-        { src: "/images/n8n-experience-video.jpg"},
+        { src: "/images/n8n-experience-video.jpg" },
         { src: "/images/n8n-experience-ocr.jpg" },
       ],
       video: "/images/n8n-experience-video.mp4",
@@ -204,11 +207,14 @@ const EXPERIENCE = {
       period: "Jun 2026 – Dec 2026",
       company: "G-Able Public Company Limited",
       role: "Full Stack Developer (Outsource)",
-      tech: "React · Java · MSSQL",
+      tech: "React · Java Spring Boot · Oracle Database",
       color: "#22d3ee",
       points: [
-        "Revamped a 30+ year old legacy system, migrating it to React or a modern tech stack.",
-        "Leveraged AI for code conversion combined with strict manual code reviews to correct AI bugs and logic flaws in the transition.",
+        "Revamped a legacy 30+ year old system, migrating from Apache Struts to React, Java Spring Boot, and Oracle Database.",
+        "Leveraged Claude Max Plan to maximize AI migration efficiency, authoring a Skill.md guide and proposing token-saving strategies to the development team.",
+        "Designed and implemented Reusable UI Components to simplify onboarding and task execution for team members.",
+        "Mentored and reviewed code for interns, guiding them from local workspace setup to comprehensive code reviews.",
+        "Performed strict manual code reviews and logic validation to correct bugs and flaws introduced during AI-assisted code conversion.",
       ],
     },
     {
@@ -526,6 +532,35 @@ export default function Portfolio() {
   const certs = CERTS[lang];
   const whatIDo = WHAT_I_DO[lang];
 
+  const handle3DMouseMove = (e, intensity = 10) => {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const xc = rect.width / 2;
+    const yc = rect.height / 2;
+    const rotateX = ((yc - y) / yc) * intensity;
+    const rotateY = ((x - xc) / xc) * intensity;
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale3d(1.02, 1.02, 1.02)`;
+    const glow = card.querySelector(".card-glow");
+    if (glow) {
+      const px = (x / rect.width) * 100;
+      const py = (y / rect.height) * 100;
+      glow.style.background = `radial-gradient(circle at ${px}% ${py}%, rgba(223, 186, 107, 0.15) 0%, transparent 60%)`;
+      glow.style.opacity = "1";
+    }
+  };
+
+  const handle3DMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0) scale3d(1, 1, 1)`;
+    const glow = card.querySelector(".card-glow");
+    if (glow) {
+      glow.style.opacity = "0";
+    }
+  };
+
   useEffect(() => {
     [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -571,6 +606,11 @@ export default function Portfolio() {
         </div>
       </nav>
 
+      {/* 3D background decorations */}
+      <div className="orb-3d orb-3d-1" />
+      <div className="orb-3d orb-3d-2" />
+      <div className="orb-3d orb-3d-3" />
+
       <section id="hero" className="pf-hero">
         <div className="hero-grid-bg" />
         <div className="hero-glow-r" />
@@ -591,9 +631,10 @@ export default function Portfolio() {
           </div>
         </div>
         <div className="hero-right">
-          <div className="photo-wrap">
+          <div className="photo-wrap" onMouseMove={(e) => handle3DMouseMove(e, 15)} onMouseLeave={handle3DMouseLeave}>
             <div className="photo-ring" />
             <div className="photo-mask"><Img src="/images/Profile.jpg" alt={t.name} onClick={() => handlePreview("/images/Profile.jpg")} /></div>
+            <div className="card-glow" />
           </div>
           <div className="photo-chip chip-a">{t.chipA}</div>
           <div className="photo-chip chip-b">{t.chipB}</div>
@@ -654,7 +695,8 @@ export default function Portfolio() {
           <p className="s-sub">{t.widSub}</p>
           <div className="wid-grid">
             {whatIDo.map((w) => (
-              <div key={w.title} className="wid-card">
+              <div key={w.title} className="wid-card" onMouseMove={(e) => handle3DMouseMove(e, 12)} onMouseLeave={handle3DMouseLeave}>
+                <div className="card-glow" />
                 <div className="wid-icon">{w.icon}</div>
                 <div className="wid-title">{w.title}</div>
                 <div className="wid-desc">{w.desc}</div>
@@ -697,7 +739,10 @@ export default function Portfolio() {
                 {ex.imgs && ex.imgs.length > 0 && (
                   <div className="tl-imgs">
                     {ex.imgs.map((img, j) => (
-                      <Img key={j} src={img.src} alt={`${ex.company} screenshot ${j + 1}`} className="tl-img" style={img.style} onClick={() => handlePreview(img.src)} />
+                      <div key={j} className="tl-img-card" onMouseMove={(e) => handle3DMouseMove(e, 10)} onMouseLeave={handle3DMouseLeave}>
+                        <div className="card-glow" />
+                        <Img src={img.src} alt={`${ex.company} screenshot ${j + 1}`} className="tl-img" style={img.style} onClick={() => handlePreview(img.src)} />
+                      </div>
                     ))}
                   </div>
                 )}
@@ -722,7 +767,8 @@ export default function Portfolio() {
           <p className="s-sub">{t.projSub}</p>
           <div className="proj-grid">
             {projects.map((p, i) => (
-              <div key={i} className="proj-card">
+              <div key={i} className="proj-card" onMouseMove={(e) => handle3DMouseMove(e, 10)} onMouseLeave={handle3DMouseLeave}>
+                <div className="card-glow" />
                 <div className="proj-thumbs">
                   {p.imgs.map((img, j) => (
                     <Img key={j} src={img.src} alt={`${p.title} screenshot`} className="proj-thumb" style={img.style} onClick={() => handlePreview(img.src)} />
@@ -757,7 +803,8 @@ export default function Portfolio() {
           <div className="s-rule" />
           <div className="cert-grid">
             {certs.map((c, i) => (
-              <div key={i} className="cert-card" style={c.highlight ? { borderColor: "rgba(251,146,60,.3)" } : {}}>
+              <div key={i} className="cert-card" style={c.highlight ? { borderColor: "rgba(251,146,60,.3)" } : {}} onMouseMove={(e) => handle3DMouseMove(e, 8)} onMouseLeave={handle3DMouseLeave}>
+                <div className="card-glow" />
                 <div className="cert-left">
                   {c.logo
                     ? <Img src={c.logo} alt={c.name} className="cert-large-img" style={c.imgStyle} onClick={() => handlePreview(c.logo)} />
